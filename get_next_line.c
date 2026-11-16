@@ -6,81 +6,45 @@
 /*   By: basayoub <basayoub@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/02 16:57:51 by basayoub          #+#    #+#             */
-/*   Updated: 2026/11/09 18:12:30 by basayoub         ###   ########.fr       */
+/*   Updated: 2026/11/11 04:22:58 by basayoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*ft_strct(char *dest, char *src)
-{
-	size_t	i;
-	size_t	j;
-
-	j = 0;
-	i = 0;
-	while (dest[i] != '\0')
-	{
-		i++;
-	}
-	while (src[j] != '\0')
-	{
-		dest[i] = src[j];
-		i++;
-		j++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
-
-char	*ft_strjon(char const *s1, char const *s2)
-{
-	size_t		i;
-	size_t		j;
-	char		*str;
-
-	i = 0;
-	j = 0;
-	while (s1[i] != '\0')
-		i++;
-	while (s2[j] != '\0')
-		j++;
-	str = malloc(i + j + 1);
-	if (str == NULL)
-		return (NULL);
-	str[0] = '\0';
-	str = ft_strct(str, (char *)s1);
-	str = ft_strct(str, (char *)s2);
-	return (str);
-}
 char    *get_next_line(int fd)
 {
 	ssize_t	b;
-	size_t	i;
 	char	*txt;
-	static char	*t2t;
+	char	*t2t;
 
-	i = 0;
 	b = 1;
-	t2t = malloc (BUFFER_SIZE + 1);
+	t2t = malloc (1);
+	if (!t2t)
+		return (NULL);
+	t2t[0] = '\0';
 	while(b > 0)
 	{
 		txt = malloc (BUFFER_SIZE + 1);
+		if (!txt)
+			return (clearerone(t2t));
 		b = read(fd, txt, BUFFER_SIZE);
+		if (b >= 0)
+			txt[b] = '\0';
 		t2t = ft_strjon(t2t, txt);
-		
+		if (checker(t2t) == 1)
+			return (t2t);
 		free (txt);
 	}
-	printf("*%zd*", b);
 	return (t2t);
 }
-int main()
+/*int main()
 {
-	//size_t	i = 0;
+	size_t	i = 0;
 	int fd = open("text.txt", O_RDONLY);
-	//while (i <= 2)
-	//{
+	while (i <= 2)
+	{
 		printf("%s",get_next_line(fd));
-	//	i++;
-	//}
-}
+		i++;
+	}
+}*/
