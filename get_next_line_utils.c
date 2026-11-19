@@ -33,7 +33,7 @@ char	*ft_strct(char *dest, char *src)
 	return (dest);
 }
 
-char	*ft_strjon(char const *s1, char const *s2)
+char	*ft_stjoin(char *s1, char *s2)
 {
 	size_t		i;
 	size_t		j;
@@ -53,19 +53,42 @@ char	*ft_strjon(char const *s1, char const *s2)
 	str = ft_strct(str, (char *)s2);
 	return (str);
 }
-int	checker(char *t2t)
+int	checker(char *t)
 {
 	size_t	i;
 
 	i = 0;
-	while (t2t[i])
+	while (t[i])
+	{
+		if (t[i] == '\n')
+			return (0);
 		i++;
-	if (t2t[i - 1] == '\0' || t2t[i - 1] == '\n')
-		return (1);
-	return (0);
+	}
+	return (1);
 }
-char	*clearerone(char *t)
+char	*get_line(char *t)
 {
+	size_t	i;
+	char	*t2;
+
+	i = 0;
+	while (t[i])
+		i++;
+	
+	t2 = malloc(i + 1);
+	i = 0;
+	while (t[i] && (t[i] != '\n'))
+	{
+		t2[i] = t[i];
+		i++;
+	}
+	t2[i] = '\0';
+	return (t2);
+	
+}
+char	*clearer(char *t, char *t2)
+{
+	free (t2);
 	free (t);
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: basayoub <basayoub@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/02 17:03:21 by basayoub          #+#    #+#             */
-/*   Updated: 2026/11/11 04:22:03 by basayoub         ###   ########.fr       */
+/*   Updated: 2026/11/19 02:38:07 by basayoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 #endif
 
 char    *get_next_line(int fd);
-char	*clearerone(char *t);
-int	checker(char *t2t);
-char	*ft_strjon(char const *s1, char const *s2);
+char	*ft_stjoin(char *dest, char *src);
+int	checker(char *t);
+char	*clearer(char *t, char *t2);
+char	*get_line(char *t);
 char	*ft_strct(char *dest, char *src);
-
 
 
 
