@@ -75,14 +75,20 @@ char	*get_line(char *t)
 	while (t[i])
 		i++;
 	
-	t2 = malloc(i + 1);
+	t2 = malloc(i + 2);
 	i = 0;
 	while (t[i] && (t[i] != '\n'))
 	{
 		t2[i] = t[i];
 		i++;
 	}
-	t2[i] = '\0';
+	if (t[i] == '\n')
+	{
+		t2[i] = t[i];
+		t2[i + 1] = '\0';
+	}
+	else
+		t2[i] = '\0';
 	return (t2);
 	
 }
