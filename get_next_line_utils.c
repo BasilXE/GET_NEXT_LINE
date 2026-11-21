@@ -76,6 +76,8 @@ char	*get_line(char *t)
 		i++;
 	
 	t2 = malloc(i + 2);
+	if (!t2)
+		return (NULL);
 	i = 0;
 	while (t[i] && (t[i] != '\n'))
 	{
@@ -90,7 +92,6 @@ char	*get_line(char *t)
 	else
 		t2[i] = '\0';
 	return (t2);
-	
 }
 char	*clearer(char *t, char *t2)
 {
