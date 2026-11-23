@@ -53,6 +53,7 @@ char	*ft_stjoin(char *s1, char *s2)
 	str = ft_strct(str, (char *)s2);
 	return (str);
 }
+
 int	checker(char *t)
 {
 	size_t	i;
@@ -66,6 +67,7 @@ int	checker(char *t)
 	}
 	return (1);
 }
+
 char	*get_line(char *t)
 {
 	size_t	i;
@@ -74,7 +76,6 @@ char	*get_line(char *t)
 	i = 0;
 	while (t[i])
 		i++;
-	
 	t2 = malloc(i + 2);
 	if (!t2)
 		return (NULL);
@@ -93,9 +94,18 @@ char	*get_line(char *t)
 		t2[i] = '\0';
 	return (t2);
 }
-char	*clearer(char *t, char *t2)
+
+char	*clearer(char **t, char **t2)
 {
-	free (t2);
-	free (t);
+	if (t && *t)
+	{
+		free (*t);
+		*t = NULL;
+	}
+	if (t2 && *t2)
+	{
+		free (*t2);
+		*t2 = NULL;
+	}
 	return (NULL);
 }
