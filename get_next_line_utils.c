@@ -12,27 +12,6 @@
 
 #include "get_next_line.h"
 
-char	*ft_strct(char *dest, char *src)
-{
-	size_t	i;
-	size_t	j;
-
-	j = 0;
-	i = 0;
-	while (dest[i] != '\0')
-	{
-		i++;
-	}
-	while (src[j] != '\0')
-	{
-		dest[i] = src[j];
-		i++;
-		j++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
-
 char	*ft_stjoin(char *s1, char *s2)
 {
 	size_t		i;
@@ -54,18 +33,28 @@ char	*ft_stjoin(char *s1, char *s2)
 	return (str);
 }
 
-int	checker(char *t)
+char	*remeber_of_read(char *t2t)
 {
+	char	*temper;
 	size_t	i;
 
 	i = 0;
-	while (t[i])
+	temper = get_line(t2t);
+	if (!temper)
 	{
-		if (t[i] == '\n')
-			return (0);
+		free (t2t);
+		return (NULL);
+	}
+	while (t2t[i])
+	{
+		if (temper[i] != t2t[i])
+			break ;
 		i++;
 	}
-	return (1);
+	free (temper);
+	temper = ft_stjoin("", t2t + i);
+	free (t2t);
+	return (temper);
 }
 
 char	*get_line(char *t)
@@ -74,38 +63,68 @@ char	*get_line(char *t)
 	char	*t2;
 
 	i = 0;
-	while (t[i])
+	while (t[i] && t[i] != '\n')
 		i++;
-	t2 = malloc(i + 2);
+	if (t[i] == '\n')
+		i++;
+	t2 = malloc (i + 1);
 	if (!t2)
 		return (NULL);
-	i = 0;
-	while (t[i] && (t[i] != '\n'))
-	{
+	t2[i] = '\0';
+	while (i--)
 		t2[i] = t[i];
-		i++;
-	}
-	if (t[i] == '\n')
-	{
-		t2[i] = t[i];
-		t2[i + 1] = '\0';
-	}
-	else
-		t2[i] = '\0';
 	return (t2);
 }
 
-char	*clearer(char **t, char **t2)
+char	*iffer(char *txt, char **t2t, char *temp)
 {
-	if (t && *t)
+	free (txt);
+	if ((*t2t)[0] == '\0')
 	{
-		free (*t);
-		*t = NULL;
+		free(*t2t);
+		return (*t2t = NULL);
 	}
-	if (t2 && *t2)
+	if (checker(*t2t))
 	{
-		free (*t2);
-		*t2 = NULL;
+		temp = *t2t;
+		*t2t = NULL;
+		return (temp);
 	}
-	return (NULL);
+	temp = get_line(*t2t);
+	if (!temp)
+	{
+		free (*t2t);
+		return (*t2t = NULL);
+	}
+	*t2t = remeber_of_read(*t2t);
+	if (!*t2t)
+	{
+		free (temp);
+		return (NULL);
+	}
+	return (temp);
+}
+
+char	*looper(int fd, char *txt, char *t2t, char *temp)
+{
+	ssize_t	b;
+
+	b = 1;
+	while (b > 0 && checker(t2t))
+	{
+		b = read(fd, txt, BUFFER_SIZE);
+		if (b < 0)
+		{
+			clearer (&txt, &t2t);
+			t2t = NULL;
+			return (NULL);
+		}
+		txt[b] = '\0';
+		temp = ft_stjoin(t2t, txt);
+		free (t2t);
+		t2t = temp;
+		if (!t2t)
+			return (clearer (&txt, NULL));
+	}
+	return (t2t);
 }

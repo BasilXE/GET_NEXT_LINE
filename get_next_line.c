@@ -6,37 +6,41 @@
 /*   By: basayoub <basayoub@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/02 16:57:51 by basayoub          #+#    #+#             */
-/*   Updated: 2026/11/23 16:13:37 by basayoub         ###   ########.fr       */
+/*   Updated: 2026/11/24 17:39:34 by basayoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*remeber_of_read(char *t2t)
+char	*ft_strct(char *dest, char *src)
 {
-	char	*temper;
 	size_t	i;
+	size_t	j;
 
+	j = 0;
 	i = 0;
-	temper = get_line(t2t);
-	if (!temper)
-		return (NULL);
-	while (t2t[i])
+	while (dest[i] != '\0')
 	{
-		if (temper[i] != t2t[i])
-			break ;
 		i++;
 	}
-	free (temper);
-	temper = ft_stjoin("", t2t + i);
-	free (t2t);
-	return (temper);
+	while (src[j] != '\0')
+	{
+		dest[i] = src[j];
+		i++;
+		j++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }
 
 int	malloccheck(char *txt, char **t2t)
 {
 	if (!txt)
+	{
+		free (*t2t);
+		*t2t = NULL;
 		return (0);
+	}
 	if (!*t2t)
 	{
 		*t2t = malloc (1);
@@ -50,52 +54,33 @@ int	malloccheck(char *txt, char **t2t)
 	return (1);
 }
 
-char	*iffer(char *txt, char **t2t, char *temp)
+int	checker(char *t)
 {
-	free (txt);
-	if ((*t2t)[0] == '\0')
+	size_t	i;
+
+	i = 0;
+	while (t[i])
 	{
-		free(*t2t);
-		return (*t2t = NULL);
+		if (t[i] == '\n')
+			return (0);
+		i++;
 	}
-	if (checker(*t2t))
-	{
-		temp = *t2t;
-		*t2t = NULL;
-		return (temp);
-	}
-	temp = get_line(*t2t);
-	if (!temp)
-	{
-		free (*t2t);
-		return (*t2t = NULL);
-	}
-	*t2t = remeber_of_read(*t2t);
-	return (temp);
+	return (1);
 }
 
-char	*looper(int fd, char *txt, char *t2t, char *temp)
+char	*clearer(char **t, char **t2)
 {
-	ssize_t	b;
-
-	b = 1;
-	while (b > 0 && checker(t2t))
+	if (t && *t)
 	{
-		b = read(fd, txt, BUFFER_SIZE);
-		if (b < 0)
-		{
-			clearer (&txt, &t2t);
-			t2t = NULL;
-			return (NULL);
-		}
-		txt[b] = '\0';
-		temp = ft_stjoin(t2t, txt);
-		free (t2t);
-		t2t = temp;
-		if (!t2t)
-			return (clearer (&txt, NULL));
+		free (*t);
+		*t = NULL;
 	}
-	return (t2t);
+	if (t2 && *t2)
+	{
+		free (*t2);
+		*t2 = NULL;
+	}
+	return (NULL);
 }
 
 char	*get_next_line(int fd)
@@ -107,7 +92,7 @@ char	*get_next_line(int fd)
 	temp = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	txt = malloc (BUFFER_SIZE + 1);
+	txt = malloc ((size_t)BUFFER_SIZE + 1);
 	if (malloccheck(txt, &t2t) == 0)
 		return (NULL);
 	t2t = looper(fd, txt, t2t, temp);
@@ -115,7 +100,10 @@ char	*get_next_line(int fd)
 		return (NULL);
 	return (iffer (txt, &t2t, temp));
 }
-/*int main()
+/*
+#include <stdio.h>
+#include <fcntl.h>
+int main()
 {
 	size_t	i = 0;
 	char	*line;

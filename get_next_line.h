@@ -6,19 +6,19 @@
 /*   By: basayoub <basayoub@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/02 17:03:21 by basayoub          #+#    #+#             */
-/*   Updated: 2026/11/23 16:15:50 by basayoub         ###   ########.fr       */
+/*   Updated: 2026/11/24 14:43:24 by basayoub         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
-#define GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-#include <unistd.h>
-#include <stdlib.h>
+# include <unistd.h>
+# include <stdlib.h>
 
-#ifndef BUFFER_SIZE
-#define BUFFER_SIZE 1
-#endif
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
+# endif
 
 char	*get_next_line(int fd);
 char	*ft_stjoin(char *dest, char *src);
